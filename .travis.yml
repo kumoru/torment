@@ -1,0 +1,13 @@
+language: python
+python:
+  - 3.3
+  - 3.4
+matrix:
+  fast_finish: true
+install:
+  - "pip install -qU --compile pip"
+  - "pip install -qU --compile coverage flake8"
+script:
+  - "pip install -qU --compile ."
+  - "flake8"
+  - "nosetests"
