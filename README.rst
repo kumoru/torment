@@ -11,7 +11,7 @@ testing patterns as well.
 Installation
 ============
 
-This pakcage is stored in PyPI and can be installed the standard way::
+This package is stored in PyPI and can be installed the standard way::
 
     pip install torment
 
