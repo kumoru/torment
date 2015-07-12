@@ -64,7 +64,9 @@ PARAMS['keywords'] = (
 
 PARAMS['packages'] = find_packages(exclude = ( 'test_*', ))
 
-PARAMS['install_requires'] = ()
+PARAMS['install_requires'] = (
+    'mypy',
+)
 
 # ..note::
 #     Documentation Requires:

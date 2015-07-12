@@ -37,6 +37,8 @@ simple::
 
     flake8
     nosetests
+    mypy -m torment
+    mypy -m test_torment
 
 The current status of the build is:
 
