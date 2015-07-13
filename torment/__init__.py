@@ -53,8 +53,8 @@ class MetaContext(type):
     def __init__(cls, name, bases, dct) -> None:
         super(MetaContext, cls).__init__(name, bases, dct)
 
-        cls.mocks_mask = set().union(*[ getattr(base, 'mocks_mask', set()) for base in bases ])
-        cls.mocks = set().union(*[ getattr(base, 'mocks', set()) for base in bases ])
+        cls.mocks_mask = set().union(getattr(cls, 'mocks_mask', set()), *[ getattr(base, 'mocks_mask', set()) for base in bases ])
+        cls.mocks = set().union(getattr(cls, 'mocks', set()), *[ getattr(base, 'mocks', set()) for base in bases ])
 
         def generate_case(fixture: fixtures.Fixture) -> Callable[[Any], None]:
             '''Generate a ``unittest.TestCase`` compatible test method.

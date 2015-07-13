@@ -241,7 +241,7 @@ def register(namespace, base_classes: Tuple[type], properties: Dict[str,Any]) ->
     it repeatable.
 
     Files calling this function are expected to house one or more Fixtures and
-    have a name that ends with a UUID without it's hyphens.  For example:
+    have a name that ends with a UUID without its hyphens.  For example:
     foo_38de9ceec5694c96ace90c9ca37e5bcb.py.  This UUID is used to uniquely
     track the Fixture through the test suite and allow Fixtures to scale without
     concern.
@@ -273,6 +273,10 @@ def register(namespace, base_classes: Tuple[type], properties: Dict[str,Any]) ->
                   :class:  class to instantiate (usually an exception)
                   :args:   arguments to pass to class initialization
                   :kwargs: keyword arguments to pass to class initialization
+
+    Properties by the following names are reserved and should not be used:
+
+    * name
 
     '''
 

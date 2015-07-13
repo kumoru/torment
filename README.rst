@@ -20,8 +20,8 @@ The latest release available is:
 .. image:: https://badge.fury.io/py/torment.png
     :target: http://badbe.fury.io/py/torment
 
-Using Torments
-==============
+Using Torment
+=============
 
 Usage of this package is documented with sphinx and available at
 http://torment.readthedocs.org/en/latest/
@@ -32,13 +32,11 @@ Developing Torment
 If you would prefer to clone this package directly from git or assist with
 development, the URL is https://github.com/alunduil/torment.
 
-Torment is tested continuously by Travis-CI and running the tests is quite
+Torment is tested continuously by Travis-CI and running the tests are quite
 simple::
 
     flake8
     nosetests
-    mypy -m torment
-    mypy -m test_torment
 
 The current status of the build is:
 
