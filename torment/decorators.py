@@ -24,6 +24,15 @@ logger = logging.getLogger(__name__)
 
 
 def log(prefix = ''):
+    '''Add start and stop logging messages to the function.
+
+    Parameters
+    ----------
+
+    :``prefix``: a prefix for the function name (optional)
+
+    '''
+
     function = None
 
     if inspect.isfunction(prefix):
