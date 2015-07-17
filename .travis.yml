@@ -7,8 +7,9 @@ matrix:
 sudo: false
 install:
   - "pip install -qU --compile pip"
-  - "pip install -qU --compile coverage flake8"
+  - "pip install -qU --compile coverage flake8 sphinx_rtd_theme"
 script:
   - "pip install -qU --compile ."
+  - "python setup.py build_sphinx"
   - "flake8"
   - "nosetests"
