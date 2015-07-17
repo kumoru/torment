@@ -30,7 +30,7 @@ Developing Torment
 ==================
 
 If you would prefer to clone this package directly from git or assist with
-development, the URL is https://github.com/kurmoru/torment.
+development, the URL is https://github.com/kumoru/torment.
 
 Torment is tested continuously by Travis-CI and running the tests are quite
 simple::
@@ -40,8 +40,8 @@ simple::
 
 The current status of the build is:
 
-.. image:: https://secure.travis-ci.org/kurmoru/torment.png?branch=master
-    :target: http://travis-ci.org/kurmoru/torment
+.. image:: https://secure.travis-ci.org/kumoru/torment.png?branch=master
+    :target: http://travis-ci.org/kumoru/torment
 
 Authors
 =======
@@ -52,7 +52,7 @@ Known Issues
 ============
 
 Known issues can be found in the github issue list at
-https://github.com/kurmoru/torment/issues.
+https://github.com/kumoru/torment/issues.
 
 Troubleshooting
 ===============
