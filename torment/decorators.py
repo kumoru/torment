@@ -21,6 +21,8 @@ from typing import Any
 from typing import Callable
 
 logger = logging.getLogger(__name__)
+logger.propogate = False
+logger.addHandler(logging.NullHandler())
 
 
 def log(prefix = ''):
