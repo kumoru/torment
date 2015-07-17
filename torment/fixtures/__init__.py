@@ -150,7 +150,7 @@ class Fixture(object):
             Override as necessary.  Default provided so re-defenition is not
             necessary.
 
-        Called after ``__init__`` and before properties have been populated by
+        Called during ``__init__`` and after properties have been populated by
         ``torment.fixtures.register``.
 
 
