@@ -35,7 +35,7 @@ PARAMS['author'] = AUTHOR  # flake8: noqa—provided by exec
 PARAMS['author_email'] = AUTHOR_EMAIL  # flake8: noqa—provided by exec
 PARAMS['license'] = LICENSE  # flake8: noqa—provided by exec
 
-PARAMS['classifiers'] = (
+PARAMS['classifiers'] = [
     'Development Status :: 2 - Pre-Alpha',
     # 'Development Status :: 3 - Alpha',
     # 'Development Status :: 4 - Beta',
@@ -52,21 +52,21 @@ PARAMS['classifiers'] = (
     'Topic :: Software Development :: Libraries',
     'Topic :: Software Development :: Libraries :: Python Modules',
     'Topic :: Software Development :: Testing',
-)
+]
 
-PARAMS['keywords'] = (
+PARAMS['keywords'] = [
     'declarative',
     'fixtures',
     'framework',
     'scalable',
     'testing',
-)
+]
 
 PARAMS['packages'] = find_packages(exclude = ( 'test_*', ))
 
-PARAMS['install_requires'] = (
+PARAMS['install_requires'] = [
     'mypy-lang',
-)
+]
 
 # ..note::
 #     Documentation Requires:
@@ -75,15 +75,15 @@ PARAMS['install_requires'] = (
 PARAMS['extras_require'] = {}
 
 PARAMS['test_suite'] = 'nose.collector'
-PARAMS['tests_require'] = (
+PARAMS['tests_require'] = [
     'coverage',
     'nose',
-)
+]
 
-PARAMS['data_files'] = (
+PARAMS['data_files'] = [
     ( 'share/doc/{P[name]}-{P[version]}'.format(P = PARAMS), (
         'README.rst',
     )),
-)
+]
 
 setup(**PARAMS)
