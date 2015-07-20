@@ -29,7 +29,6 @@ from torment import decorators
 logger = logging.getLogger(__name__)
 
 
-@decorators.log
 def extend(base: Dict[Any, Any], extension: Dict[Any, Any]) -> Dict[Any, Any]:
     '''Extend base by updating with the extension.
  
