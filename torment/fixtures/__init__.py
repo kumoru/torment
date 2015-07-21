@@ -129,7 +129,9 @@ class Fixture(object):
 
         '''
 
-        return self.__module__.rsplit('.', 2)[-2].replace('test_', '')
+        logger.debug('dir(self.__module__): %s', dir(self.__module__))
+
+        return self.__module__.__name__.rsplit('.', 2)[-2].replace('test_', '')
 
     @property
     def description(self) -> str:
