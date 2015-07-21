@@ -47,7 +47,7 @@ class FixturesPropertyUnitTest(unittest.TestCase):
     def test_fixture_category(self) -> None:
         '''torment.fixtures.Fixture(context).category == 'fixtures' '''
 
-        self.f.__module__ = 'test_torment.test_unit.test_fixtures.fixture_a44bc6dda6654b1395a8c2cbd55d964d'
+        self.f.__module__ = unittest.mock.MagicMock(__name__ = 'test_torment.test_unit.test_fixtures.fixture_a44bc6dda6654b1395a8c2cbd55d964d')
 
         self.assertEqual(self.f.category, 'fixtures')
 
