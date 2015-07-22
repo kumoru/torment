@@ -11,3 +11,16 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+from torment import fixtures
+
+from test_torment.test_unit.test_contexts.test_docker.test_compose import CallWrapperFixture
+
+fixtures.register(globals(), ( CallWrapperFixture, ), {
+    'function_name': 'found',
+
+    'expected': (
+        ( ( 'which docker-compose', ), { 'shell': True, }, ),
+        ( ( 'docker-compose stop', ), { 'shell': True, }, ),
+    ),
+})

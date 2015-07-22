@@ -14,9 +14,8 @@
 
 import typing  # flake8: noqa (use mypy typing)
 
+from torment import contexts
 from torment import fixtures
-from torment import MetaContext
-from torment import TestContext
 
 from torment import decorators
 
@@ -50,7 +49,7 @@ class MockDecoratorFixture(fixtures.Fixture):
         pass  # TODO mock symbol
 
 
-class DecoratorUnitTest(TestContext, metaclass = MetaContext):
+class DecoratorUnitTest(contexts.TestContext, metaclass = contexts.MetaContext):
     fixture_classes = (
         LogDecoratorFixture,
         MockDecoratorFixture,
