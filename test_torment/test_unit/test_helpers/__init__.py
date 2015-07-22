@@ -17,9 +17,8 @@ import os
 import typing  # flake8: noqa (use mypy typing)
 import unittest
 
+from torment import contexts
 from torment import fixtures
-from torment import MetaContext
-from torment import TestContext
 
 from torment import helpers
 
@@ -38,7 +37,7 @@ class ExtendFixture(fixtures.Fixture):
 helpers.import_directory(__name__, os.path.dirname(__file__))
 
 
-class HelperUnitTest(TestContext, metaclass = MetaContext):
+class HelperUnitTest(contexts.TestContext, metaclass = contexts.MetaContext):
     fixture_classes = (
         ExtendFixture,
     )
