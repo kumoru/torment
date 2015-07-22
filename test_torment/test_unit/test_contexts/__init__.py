@@ -110,6 +110,16 @@ class TestContextPropertyUnitTest(unittest.TestCase):
     def setUp(self) -> None:
         self.c = contexts.TestContext()
 
+    def test_testcontext_mocks(self) -> None:
+        '''torment.contexts.TestContext().mocks == {}'''
+
+        self.assertEqual(self.c.mocks, set())
+
+    def test_testcontext_mocks_mask(self) -> None:
+        '''torment.contexts.TestContext().mocks_mask == {}'''
+
+        self.assertEqual(self.c.mocks_mask, set())
+
     def test_testcontext_module(self) -> None:
         '''torment.contexts.TestContext().module == 'torment.fixtures' '''
 
