@@ -24,6 +24,6 @@ fixtures.register(globals(), ( UpFixture, ), {
     },
 
     'expected': (
-        ( ( 'docker-compose up -d --no-deps', ), {}, ),
+        ( ( [ 'docker-compose', 'up', '-d', '--no-deps', ], ), {}, ),
     ),
 })

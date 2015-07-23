@@ -35,7 +35,7 @@ def found() -> bool:
 
     '''
 
-    return 0 == _call('which docker-compose', shell = True) and 0 == stop()
+    return 0 == _call([ 'which', 'docker-compose', ], shell = True) and 0 == stop()
 
 
 def stop() -> int:
@@ -48,7 +48,7 @@ def stop() -> int:
 
     '''
 
-    return _call('docker-compose stop', shell = True)
+    return _call([ 'docker-compose', 'stop', ], shell = True)
 
 
 def up(services: Iterable[str] = ()) -> int:
@@ -67,7 +67,7 @@ def up(services: Iterable[str] = ()) -> int:
 
     '''
 
-    return _call(' '.join([ 'docker-compose up -d --no-deps', ] + list(services)))
+    return _call([ 'docker-compose', 'up', '-d', '--no-deps', ] + list(services))
 
 
 def _call(command: str, *args, **kwargs) -> int:
