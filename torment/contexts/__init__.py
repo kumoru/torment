@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import unittest
+import unittest.mock
 import re
 import logging
 import typing  # flake8: noqa (use mypy typing)
