@@ -10,6 +10,6 @@ install:
   - "pip install -qU --compile coverage flake8 sphinx_rtd_theme"
 script:
   - "pip install -qU --compile ."
-  - "python setup.py build_sphinx"
+  - "SPHINXOPTS='-n -W' make -eC docs html"
   - "flake8"
   - "nosetests"
