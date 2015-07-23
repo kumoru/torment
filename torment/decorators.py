@@ -41,7 +41,7 @@ def log(prefix = ''):
         prefix, function = '', prefix
 
     def _(function):
-        @functools.wraps(function)
+        @functools.wraps(function, assigned = functools.WRAPPER_ASSIGNMENTS + ( '__file__', ))
         def wrapper(*args, **kwargs):  # TODO use inspect.signature
             format_args = (
                 prefix + function.__name__,
