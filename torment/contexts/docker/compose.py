@@ -12,9 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import logging
+import select
+import subprocess
 import typing  # flake8: noqa (use mypy typing)
 
 from typing import Iterable
+
+logger = logging.getLogger(__name__)
 
 
 def found() -> bool:
