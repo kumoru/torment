@@ -14,9 +14,9 @@
 
 from torment import fixtures
 
-from test_torment.test_unit.test_contexts.test_docker.test_compose import UpFixture
+from test_torment.test_unit.test_contexts.test_docker.test_compose import ErrorUpFixture
 
-fixtures.register(globals(), ( UpFixture, ), {
+fixtures.register(globals(), ( ErrorUpFixture, ), {
     'function_name': 'up',
 
     'parameters': {
@@ -24,6 +24,11 @@ fixtures.register(globals(), ( UpFixture, ), {
     },
 
     'expected': (
-        ( ( [ 'docker-compose', 'up', '-d', '--no-deps', ], ), {}, ),
+        ( ( 'docker-compose up -d --no-deps', ), {}, ),
     ),
+
+    'error': {
+        'class': ValueError,
+        'args': ( 'empty iterable passed to up(): []', ),
+    },
 })
