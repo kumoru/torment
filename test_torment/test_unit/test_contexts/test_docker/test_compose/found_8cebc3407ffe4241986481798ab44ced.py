@@ -20,7 +20,7 @@ fixtures.register(globals(), ( CallWrapperFixture, ), {
     'function_name': 'found',
 
     'expected': (
-        ( ( [ 'which', 'docker-compose', ], ), { 'shell': True, }, ),
-        ( ( [ 'docker-compose', 'stop', ], ), { 'shell': True, }, ),
+        ( ( 'which docker-compose', ), { 'shell': True, }, ),
+        ( ( 'docker-compose stop', ), { 'shell': True, }, ),
     ),
 })

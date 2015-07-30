@@ -56,6 +56,22 @@ class UpFixture(CallWrapperFixture):
     def description(self) -> str:
         return super().description[:-1] + '{0.parameters[services]})'.format(self)
 
+
+class ErrorUpFixture(CallWrapperFixture):
+    @property
+    def description(self) -> str:
+        return super().description[:-1] + '{0.parameters[services]}) → {0.error}'.format(self)
+
+    def run(self) -> None:
+        with self.context.assertRaises(self.error.__class__, msg = self.error.args[0]) as error:
+            compose.up(**self.parameters)
+
+        self.exception = error.exception
+
+    def check(self) -> None:
+        self.context.assertEqual(self.exception.args, self.error.args)
+
+
 helpers.import_directory(__name__, os.path.dirname(__file__))
 
 

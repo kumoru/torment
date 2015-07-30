@@ -35,7 +35,7 @@ def found() -> bool:
 
     '''
 
-    return 0 == _call([ 'which', 'docker-compose', ], shell = True) and 0 == stop()
+    return 0 == _call('which docker-compose', shell = True) and 0 == stop()
 
 
 def stop() -> int:
@@ -48,7 +48,7 @@ def stop() -> int:
 
     '''
 
-    return _call([ 'docker-compose', 'stop', ], shell = True)
+    return _call('docker-compose stop', shell = True)
 
 
 def up(services: Iterable[str] = ()) -> int:
@@ -67,7 +67,12 @@ def up(services: Iterable[str] = ()) -> int:
 
     '''
 
-    return _call([ 'docker-compose', 'up', '-d', '--no-deps', ] + list(services))
+    services = list(services)
+
+    if not len(services):
+        raise ValueError('empty iterable passed to up(): {0}'.format(services))
+
+    return _call('docker-compose up -d --no-deps ' + ' '.join(services), shell = True)
 
 
 def _call(command: str, *args, **kwargs) -> int:
