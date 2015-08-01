@@ -15,7 +15,7 @@
 import copy
 import inspect
 import logging
-import typing  # flake8: noqa (use mypy typing)
+import typing  # noqa (use mypy typing)
 import unittest
 import uuid
 
@@ -163,7 +163,7 @@ class RegisterUnitTest(unittest.TestCase):
     def test_one_function_properties(self) -> None:
         '''torment.fixtures.register({}, (), { 'a': self → None, })'''
 
-        def a(self) -> None: pass  # flake8: noqa (one line function in tests)
+        def a(self) -> None: pass  # noqa (one line function in tests)
 
         fixtures.register(self.ns, ( fixtures.Fixture, ), { 'a': a, })
 
@@ -210,7 +210,7 @@ class ResolveFunctionsUnitTest(unittest.TestCase):
     def test_one_functions_without_parameters(self) -> None:
         '''torment.fixtures._resolve_functions({ 'a': ø → None, }, fixture)'''
 
-        def a() -> None: pass  # flake8: noqa (one line function in tests)
+        def a() -> None: pass  # noqa (one line function in tests)
 
         fixtures._resolve_functions({ 'a': a, }, self.f)
 
@@ -219,7 +219,7 @@ class ResolveFunctionsUnitTest(unittest.TestCase):
     def test_one_functions_with_self_parameter(self) -> None:
         '''torment.fixtures._resolve_functions({ 'a': self → None, }, fixture)'''
 
-        def a(self) -> None: pass  # flake8: noqa (one line function in tests)
+        def a(self) -> None: pass  # noqa (one line function in tests)
 
         fixtures._resolve_functions({ 'a': a, }, self.f)
 
@@ -228,7 +228,7 @@ class ResolveFunctionsUnitTest(unittest.TestCase):
     def test_one_functions_with_self_parameter_raises_attributeerror(self) -> None:
         '''torment.fixtures._resolve_functions({ 'a': self → self.b, }, fixture)'''
 
-        def a(self): return self.b  # flake8: noqa (one line function in tests)
+        def a(self): return self.b  # noqa (one line function in tests)
 
         fixtures._resolve_functions({ 'a': a, }, self.f)
 
@@ -237,8 +237,8 @@ class ResolveFunctionsUnitTest(unittest.TestCase):
     def test_many_functions(self) -> None:
         '''torment.fixtures._resolve_functions({ 'a': self → self.b, 'b': self → None, }, fixture)'''
 
-        def a(self) -> None: return self.b  # flake8: noqa (one line function in tests)
-        def b(self) -> None: pass  # flake8: noqa (one line function in tests)
+        def a(self) -> None: return self.b  # noqa (one line function in tests)
+        def b(self) -> None: pass  # noqa (one line function in tests)
 
         fixtures._resolve_functions({ 'a': a, 'b': b, }, self.f)
 

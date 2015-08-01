@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import os
-import typing  # flake8: noqa (use mypy typing)
+import typing  # noqa (use mypy typing)
 import unittest
 
 from torment.contexts import docker

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import typing  # flake8: noqa (use mypy typing)
+import typing  # noqa (use mypy typing)
 
 from torment import contexts
 from torment import fixtures

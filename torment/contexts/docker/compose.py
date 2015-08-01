@@ -15,7 +15,7 @@
 import logging
 import select
 import subprocess
-import typing  # flake8: noqa (use mypy typing)
+import typing  # noqa (use mypy typing)
 
 from typing import Iterable
 

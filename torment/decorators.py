@@ -15,7 +15,7 @@
 import functools
 import inspect
 import logging
-import typing  # flake8: noqa (use mypy typing)
+import typing  # noqa (use mypy typing)
 
 from typing import Any
 from typing import Callable

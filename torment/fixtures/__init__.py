@@ -17,7 +17,7 @@ import inspect
 import logging
 import os
 import sys
-import typing  # flake8: noqa (use mypy typing)
+import typing  # noqa (use mypy typing)
 import uuid
 
 from typing import Any
