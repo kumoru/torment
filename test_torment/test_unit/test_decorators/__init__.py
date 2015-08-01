@@ -17,8 +17,6 @@ import typing  # noqa (use mypy typing)
 from torment import contexts
 from torment import fixtures
 
-from torment import decorators
-
 
 class LogDecoratorFixture(fixtures.Fixture):
     @property

@@ -107,7 +107,7 @@ class RegisterUnitTest(unittest.TestCase):
         mocked_inspect.configure_mock(**{ 'isclass': inspect.isclass, 'isfunction': inspect.isfunction, })
 
         mocked_inspect.stack.return_value = ( None, ( None, 'test_unit/test_d43830e2e9624dd19c438b15250c5818.py', ), )
-        
+
         class ContextStub(object):
             pass
 
@@ -163,7 +163,8 @@ class RegisterUnitTest(unittest.TestCase):
     def test_one_function_properties(self) -> None:
         '''torment.fixtures.register({}, (), { 'a': self → None, })'''
 
-        def a(self) -> None: pass  # noqa (one line function in tests)
+        def a(self) -> None:
+            pass
 
         fixtures.register(self.ns, ( fixtures.Fixture, ), { 'a': a, })
 
@@ -210,7 +211,8 @@ class ResolveFunctionsUnitTest(unittest.TestCase):
     def test_one_functions_without_parameters(self) -> None:
         '''torment.fixtures._resolve_functions({ 'a': ø → None, }, fixture)'''
 
-        def a() -> None: pass  # noqa (one line function in tests)
+        def a() -> None:
+            pass
 
         fixtures._resolve_functions({ 'a': a, }, self.f)
 
@@ -219,7 +221,8 @@ class ResolveFunctionsUnitTest(unittest.TestCase):
     def test_one_functions_with_self_parameter(self) -> None:
         '''torment.fixtures._resolve_functions({ 'a': self → None, }, fixture)'''
 
-        def a(self) -> None: pass  # noqa (one line function in tests)
+        def a(self) -> None:
+            pass
 
         fixtures._resolve_functions({ 'a': a, }, self.f)
 
@@ -228,7 +231,8 @@ class ResolveFunctionsUnitTest(unittest.TestCase):
     def test_one_functions_with_self_parameter_raises_attributeerror(self) -> None:
         '''torment.fixtures._resolve_functions({ 'a': self → self.b, }, fixture)'''
 
-        def a(self): return self.b  # noqa (one line function in tests)
+        def a(self):
+            return self.b
 
         fixtures._resolve_functions({ 'a': a, }, self.f)
 
@@ -237,8 +241,11 @@ class ResolveFunctionsUnitTest(unittest.TestCase):
     def test_many_functions(self) -> None:
         '''torment.fixtures._resolve_functions({ 'a': self → self.b, 'b': self → None, }, fixture)'''
 
-        def a(self) -> None: return self.b  # noqa (one line function in tests)
-        def b(self) -> None: pass  # noqa (one line function in tests)
+        def a(self) -> None:
+            return self.b
+
+        def b(self) -> None:
+            pass
 
         fixtures._resolve_functions({ 'a': a, 'b': b, }, self.f)
 

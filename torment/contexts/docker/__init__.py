@@ -76,7 +76,7 @@ class DockerContext(contexts.TestContext):
 
             from torment import contexts
             tearDownModule = contexts.docker.DockerContext.tearDownModule
-        
+
         '''
 
         if compose.found():

@@ -79,7 +79,7 @@ def _call(command: str, *args, **kwargs) -> int:
     '''Wrapper around ``subprocess.Popen`` that sends command output to logger.
 
     .. seealso::
-       
+
        ``subprocess.Popen``_
 
     Parameters

@@ -233,7 +233,7 @@ def of(fixture_classes: Iterable[type], context: Union[None, 'torment.TestContex
     return fixtures
 
 
-def register(namespace, base_classes: Tuple[type], properties: Dict[str,Any]) -> None:
+def register(namespace, base_classes: Tuple[type], properties: Dict[str, Any]) -> None:
     '''Register a Fixture class in namespace with the given properties.
 
     Creates a Fixture class (not object) and inserts it into the provided
@@ -282,9 +282,10 @@ def register(namespace, base_classes: Tuple[type], properties: Dict[str,Any]) ->
 
     '''
 
-    props = copy.deepcopy(properties)  # ensure we have a clean copy of the data
-                                       # and won't stomp on re-uses elsewhere in
-                                       # someone's code
+    # ensure we have a clean copy of the data
+    # and won't stomp on re-uses elsewhere in
+    # someone's code
+    props = copy.deepcopy(properties)
 
     desc = props.pop('description', None)  # type: Union[str, None]
 
