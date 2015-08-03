@@ -108,18 +108,15 @@ class TestContext(unittest.TestCase):
     ``fixture_classes`` property must be an iterable of subclasses of
     ``torment.fixtures.Fixture``.
 
-    Properties
-    ----------
+    **Properties**
 
     * ``module``
 
-    Public Methods
-    --------------
+    **Public Methods**
 
     * ``patch``
 
-    Class Variables
-    ---------------
+    **Class Variables**
 
     :``mocks_mask``: set of mocks to mask from being mocked
     :``mocks``:      set of mocks this TestContext provides
@@ -144,8 +141,7 @@ class TestContext(unittest.TestCase):
         Sets up mock objects for the given symbol in the actual module
         corresponding to this context's testing module.
 
-        Parameters
-        ----------
+        **Parameters**
 
         :``name``: the symbol to mock—must exist in the actual module under test
 

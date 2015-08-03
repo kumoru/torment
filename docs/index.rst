@@ -47,19 +47,19 @@ Torment is based on a series of rules in order to work as expected.  Below you w
 
    * How do I load these files?
 
-     * ``torment.helpers.import_directory``_ recursively loads python modules in a directory::
+     * ``torment.helpers.import_directory`` recursively loads python modules in a directory::
      
            helpers.import_directory(__name__, os.path.dirname(__file__))
 
 2. Inside that newly created file, it must contain at least one register to build a testcase 
     
-   * ``torment.fixtures.register``_ associates runtime with data, in other words it puts the data & class together
+   * ``torment.fixtures.register`` associates runtime with data, in other words it puts the data & class together
 
 3. The register requires a FixtureClass (type is defined elsewhere)
     
    * What kind of class?
      
-     * Must be a subclass of ``torment.fixtures.Fixture``_
+     * Must be a subclass of ``torment.fixtures.Fixture``
    
    *  Where do I define it?
 
@@ -71,7 +71,7 @@ Torment is based on a series of rules in order to work as expected.  Below you w
      
      * TestContext specifies which fixtures it should test::
            
-           class HelperUnitTest(TestContext, metaclass = MetaContext):
+           class HelperUnitTest(TestContext, metaclass = contexts.MetaContext):
                fixture_classes = (
                    ExtendFixture,
                )
@@ -82,7 +82,8 @@ Torment is based on a series of rules in order to work as expected.  Below you w
 
 .. note::
    A metaclass is the object that specifies how a class is created. 
-   MetaContext is a metaclass we created to build TestContext classes.
+   ``torment.contexts.MetaContext`` is a metaclass we created to build
+   TestContext classes.
 
    Before getting starting, if you are unfamiliar with metaclasses, it is highly recommended that you read the official Python documenation `here`_.  If you'd rather just review a quick, older primer, you can check out a 2012 `blog`_ from Jake Vanderplas.
 
@@ -92,7 +93,7 @@ Torment is based on a series of rules in order to work as expected.  Below you w
 .. toctree::
    :titlesonly:
    
-   context
+   contexts
    fixtures
 
 * :ref:`genindex`
