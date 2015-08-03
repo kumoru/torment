@@ -16,7 +16,7 @@ import unittest
 import unittest.mock
 import re
 import logging
-import typing  # flake8: noqa (use mypy typing)
+import typing  # noqa (use mypy typing)
 import warnings
 
 from typing import Any

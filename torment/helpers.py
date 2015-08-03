@@ -17,12 +17,11 @@ import importlib
 import itertools
 import logging
 import os
-import typing  # flake8: noqa (use mypy typing)
+import typing  # noqa (use mypy typing)
 
 from typing import Any
 from typing import Dict
 from typing import Iterable
-from typing import List
 
 from torment import decorators
 
@@ -31,7 +30,7 @@ logger = logging.getLogger(__name__)
 
 def extend(base: Dict[Any, Any], extension: Dict[Any, Any]) -> Dict[Any, Any]:
     '''Extend base by updating with the extension.
- 
+
     Arguments
     ---------
 

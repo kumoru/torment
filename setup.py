@@ -23,17 +23,17 @@ with open(os.path.join(os.path.dirname(__file__), 'torment', 'information.py'), 
 
 PARAMS = {}
 
-PARAMS['name'] = NAME  # flake8: noqa—provided by exec
-PARAMS['version'] = VERSION  # flake8: noqa—provided by exec
-PARAMS['description'] = DESCRIPTION  # flake8: noqa—provided by exec
+PARAMS['name'] = NAME  # noqa (provided by exec)
+PARAMS['version'] = VERSION  # noqa (provided by exec)
+PARAMS['description'] = DESCRIPTION  # noqa (provided by exec)
 
 with open(os.path.join(os.path.dirname(__file__), 'README.rst'), 'r', encoding = 'utf-8') as fh:
     PARAMS['long_description'] = fh.read()
 
-PARAMS['url'] = URL  # flake8: noqa—provided by exec
-PARAMS['author'] = AUTHOR  # flake8: noqa—provided by exec
-PARAMS['author_email'] = AUTHOR_EMAIL  # flake8: noqa—provided by exec
-PARAMS['license'] = LICENSE  # flake8: noqa—provided by exec
+PARAMS['url'] = URL  # noqa (provided by exec)
+PARAMS['author'] = AUTHOR  # noqa (provided by exec)
+PARAMS['author_email'] = AUTHOR_EMAIL  # noqa (provided by exec)
+PARAMS['license'] = LICENSE  # noqa (provided by exec)
 
 PARAMS['classifiers'] = [
     'Development Status :: 4 - Beta',

@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import os
-import typing  # flake8: noqa (use mypy typing)
+import typing  # noqa (use mypy typing)
 import unittest
 
 from torment.contexts import docker
@@ -33,7 +33,7 @@ class DockerContextPropertyUnitTest(unittest.TestCase):
 
         self.assertEqual(self.c.host, '127.0.0.1')
 
-    def test_dockercontext_host(self) -> None:
+    def test_dockercontext_remote_host(self) -> None:
         '''torment.contexts.DockerContext().host == '192.0.2.103' '''
 
         os.environ['DOCKER_HOST'] = 'tcp://192.0.2.103:2376'
