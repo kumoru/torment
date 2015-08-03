@@ -71,20 +71,17 @@ class Fixture(object):
     creates a subclass that the rest of the torment knows how to transform into
     test cases that are compatible with nose.
 
-    Examples
-    --------
+    **Examples**
 
     TODO ADD EXAMPLES
 
-    Properties
-    ----------
+    **Properties**
 
     * ``category``
     * ``description`` (override)
     * ``name`` (do **not** override)
 
-    Methods To Override
-    -------------------
+    **Methods To Override**
 
     * ``__init__``
     * ``check``
@@ -92,8 +89,7 @@ class Fixture(object):
     * ``run (required)``
     * ``setup``
 
-    Instance Variables
-    ------------------
+    **Instance Variables**
 
     :``context``: the ``torment.TestContext`` this case is running in which
                   provides the assertion methods of ``unittest.TestCase``.
@@ -106,8 +102,7 @@ class Fixture(object):
         Initializes the Fixture's context (can be changed like any other
         property).
 
-        Parameters
-        ----------
+        **Parameters**
 
         :``context``: a subclass of ``torment.TestContext`` that provides
                       assertion methods and any other environmental information
@@ -121,8 +116,7 @@ class Fixture(object):
     def category(self) -> str:
         '''Fixture's category (the containing testing module name)
 
-        Examples
-        --------
+        **Examples**
 
         :module:   test_torment.test_unit.test_fixtures.fixture_a44bc6dda6654b1395a8c2cbd55d964d
         :category: fixtures
@@ -204,14 +198,12 @@ class Fixture(object):
 def of(fixture_classes: Iterable[type], context: Union[None, 'torment.TestContext'] = None) -> Iterable['torment.fixtures.Fixture']:
     '''Obtain all Fixture objects of the provided classes.
 
-    Parameters
-    ----------
+    **Parameters**
 
     :``fixture_classes``: classes inheriting from ``torment.fixtures.Fixture``
     :``context``:         a ``torment.TestContext`` to initialize Fixtures with
 
-    Return Value(s)
-    ---------------
+    **Return Value(s)**
 
     Instantiated ``torment.fixtures.Fixture`` objects for each individual
     fixture class that inherits from one of the provided classes.
@@ -248,8 +240,7 @@ def register(namespace, base_classes: Tuple[type], properties: Dict[str, Any]) -
     track the Fixture through the test suite and allow Fixtures to scale without
     concern.
 
-    Parameters
-    ----------
+    **Parameters**
 
     :``namespace``:    dictionary to insert the generated class into
     :``base_classes``: list of classes the new class should inherit
@@ -349,8 +340,7 @@ def _resolve_functions(functions: Dict[str, Callable[[Any], Any]], fixture: Fixt
         occurred is also logged.  This function does not return but adds the
         results to fixture directly.
 
-        Parameters
-        ----------
+        **Parameters**
 
         :``functions``: dict mapping function names (property names) to
                         callable functions
@@ -387,14 +377,12 @@ def _resolve_functions(functions: Dict[str, Callable[[Any], Any]], fixture: Fixt
 def _unique_class_name(namespace: Dict[str, Any], uuid: uuid.UUID) -> str:
     '''Generate unique to namespace name for a class using uuid.
 
-    Parameters
-    ----------
+    **Parameters**
 
     :``namespace``: the namespace to verify uniqueness against
     :``uuid``:      the "unique" portion of the name
 
-    Return Value(s)
-    ---------------
+    **Return Value(s)**
 
     A unique string (in namespace) using uuid.
 

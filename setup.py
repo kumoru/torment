@@ -69,6 +69,7 @@ PARAMS['install_requires'] = [
 # ..note::
 #     Documentation Requires:
 #     * sphinx_rtd_theme
+#     * numpydoc
 
 PARAMS['extras_require'] = {}
 
