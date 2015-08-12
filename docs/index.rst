@@ -8,7 +8,7 @@ Torment is scalable testing fixtures.
 Getting Started
 ---------------
 
-Torment gives you many options to generate fixtures to fit your testing needs.
+Torment has many options to generate fixtures to fit your testing needs.
 
 Multiple fixtures with the different data:
 
@@ -37,13 +37,13 @@ Multiple fixtures using dynamic data:
 Torment Usage
 ^^^^^^^^^^^^^
 
-Torment is based on a series of rules in order to work as expected.  Below you will find a short list of the minimum requirements required to get started.
+In order to work as expected, Torment is based on a series of rules.  The minimum requirements to get started are listed below.
 
 1. A filename with the following format:  **[descriptive-statement]_{UUID}.py**
     
    * Where are these files located?
      
-     * These can be located anywhere you would like.  In source, out of source, whatever you would like.  Normally alongside other tests. 
+     * These can be located anywhere you would like.  In source, out of source, whatever is desired.  Normally alongside other tests. 
 
    * How do I load these files?
 
@@ -51,7 +51,7 @@ Torment is based on a series of rules in order to work as expected.  Below you w
      
            helpers.import_directory(__name__, os.path.dirname(__file__))
 
-2. Inside that newly created file, it must contain at least one register to build a testcase 
+2. The newly created file must contain at least one register to build a testcase
     
    * ``torment.fixtures.register`` associates runtime with data, in other words it puts the data & class together
 
@@ -63,7 +63,7 @@ Torment is based on a series of rules in order to work as expected.  Below you w
    
    *  Where do I define it?
 
-      * There is no restrctions on where you define.
+      * There are no restrictions on where you define
 
 4. A FixtureClass requires a TestContext
    
@@ -76,16 +76,15 @@ Torment is based on a series of rules in order to work as expected.  Below you w
                    ExtendFixture,
                )
 
-   * Why do I have to set my metaclass to metacontext
+   * Why do I have to set my metaclass to metacontext?
 
      * The metacontext turns fixtures into test methods
 
 .. note::
    A metaclass is the object that specifies how a class is created. 
-   ``torment.contexts.MetaContext`` is a metaclass we created to build
-   TestContext classes.
+   ``torment.contexts.MetaContext`` is a metaclass we created to build TestContext classes.
 
-   Before getting starting, if you are unfamiliar with metaclasses, it is highly recommended that you read the official Python documenation `here`_.  If you'd rather just review a quick, older primer, you can check out a 2012 `blog`_ from Jake Vanderplas.
+   If you are unfamiliar with metaclasses, it is highly recommended that you read the offical Python documentation  `here`_ before getting started.  For a quick primer refer to Jake Vanderplas'  `blog`_ post from 2012.  
 
 .. _here: https://docs.python.org/3/reference/datamodel.html?highlight=metaclass#customizing-class-creation
 .. _blog: https://jakevdp.github.io/blog/2012/12/01/a-primer-on-python-metaclasses/
