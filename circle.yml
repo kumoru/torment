@@ -1,0 +1,19 @@
+machine:
+  python:
+    version:
+      3.4.3
+
+dependencies:
+  pre:
+    - pip3 install -qU --compile pip
+  override:
+    - pip3 install -qU --compile coverage flake8 nose
+    - pip3 install -qU --compile sphinx_rtd_theme
+  post:
+    - python setup.py install
+
+test:
+  override:
+    - flake8
+    - nosetests test_torment/test_unit
+    - SPHINXOPTS='-n -W' make -eC docs html
