@@ -2,7 +2,6 @@ machine:
   python:
     version:
       3.4.3
-
 dependencies:
   pre:
     - pip3 install -qU --compile pip
@@ -11,9 +10,9 @@ dependencies:
     - pip3 install -qU --compile sphinx_rtd_theme
   post:
     - python setup.py install
-
 test:
   override:
     - flake8
-    - nosetests test_torment/test_unit
     - SPHINXOPTS='-n -W' make -eC docs html
+    - mkdir -p ${CIRCLE_TEST_REPORTS}/nosetests
+    - nosetests test_torment/test_unit --with-xunit --xunit-file=${CIRCLE_TEST_REPORTS}/nosetests/tests.xml
