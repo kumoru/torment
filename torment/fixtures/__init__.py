@@ -355,13 +355,13 @@ def _resolve_functions(functions: Dict[str, Callable[[Any], Any]], fixture: Fixt
             function_count = len(functions)
 
             for name, function in copy.copy(functions).items():
-                logger.debug('name: %s', name)
-
                 try:
                     setattr(fixture, name, copy.deepcopy(function(fixture)))
                     del functions[name]
                 except:
                     exc_info = sys.exc_info()
+
+                    logger.debug('name: %s', name)
                     logger.debug('exc_info: %s', exc_info)
 
                     last_function = name
