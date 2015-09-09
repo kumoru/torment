@@ -130,16 +130,18 @@ class TestContextPropertyUnitTest(unittest.TestCase):
 
 
 class TestContextPatchUnitTest(unittest.TestCase):
-    @unittest.skip('TODO test patch')
     def test_testcontext_patch(self) -> None:
         '''torment.contexts.TestContext().patch('PATCH')'''
 
         logger.debug('self.__module__: %s', self.__module__)
 
-        mock_c = unittest.mock.MagicMock(wraps = contexts.TestContext(), module = self.__module__)
-        logger.debug('mock_c.module: %s', mock_c.module)
+        _ = unittest.mock.patch.object(contexts.TestContext, 'module', self.__module__)
+        _.start()
+        self.addCleanup(_.stop)
 
-        mock_c.patch('PATCH')
+        c = contexts.TestContext()
 
-        self.assertTrue(hasattr(mock_c, 'mocked_PATCH'))
-        self.assertIsInstance(mock_c.mocked_PATCH, unittest.mock.MagicMock)
+        c.patch('PATCH')
+
+        self.assertTrue(hasattr(c, 'mocked_PATCH'))
+        self.assertIsInstance(c.mocked_PATCH, unittest.mock.MagicMock)
