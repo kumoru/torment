@@ -56,6 +56,7 @@ class MetaContextGenerateCasesUnitTest(unittest.TestCase):
             '__str__',
             '__subclasshook__',
             '__weakref__',
+            'docker_compose_services',
             'mocks',
             'mocks_mask',
         ]
