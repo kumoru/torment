@@ -57,6 +57,8 @@ class MetaContext(type):
         cls.mocks_mask = set().union(getattr(cls, 'mocks_mask', set()), *[ getattr(base, 'mocks_mask', set()) for base in bases ])
         cls.mocks = set().union(getattr(cls, 'mocks', set()), *[ getattr(base, 'mocks', set()) for base in bases ])
 
+        cls.docker_compose_services = set().union(getattr(cls, 'docker_compose_services', set()), *[ getattr(base, 'docker_compose_services', set()) for base in bases ])
+
         def generate_case(fixture: fixtures.Fixture) -> Callable[[Any], None]:
             '''Generate a ``unittest.TestCase`` compatible test method.
 
