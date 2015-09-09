@@ -73,7 +73,56 @@ class Fixture(object):
 
     **Examples**
 
-    TODO ADD EXAMPLES
+    Simplest Fixture subclass:
+
+    .. code-block:: python
+
+       class MyFixture(Fixture):
+           pass
+
+    Of course, to be useful the Fixture needs definitions of setup, run, and
+    check that actually test the code we're interested in checking:
+
+    .. code-block:: python
+
+       def add(x, y):
+           return x + y
+
+       class AddFixture(Fixture):
+           def run(self):
+               self.result = add(self.parameters['x'], self.parameters['y'])
+
+           def check(self):
+               self.context.assertEqual(self.result, self.expected)
+
+    This fixture uses a couple of conventions (not requirements):
+
+    #. ``self.parameters`` as a dictionary of parameter names to values
+    #. ``self.expected`` as the value we expect as a result
+    #. ``self.result`` as the holder inside the fixture between ``run`` and
+       ``check``
+
+    This show-cases the ridiculity of using this testing framework for simple
+    functions that have few cases that require testing.  This framework is
+    designed to allow many cases to be easily and declaritively defined.
+
+    The last component required to get these fixtures to actually run is hooking
+    them together with a context:
+
+    .. code-block:: python
+
+       from torment import contexts
+
+       class AddUnitTest(contexts.TestContext, metaclass = contexts.MetaContext):
+           fixture_classes = (
+               MyFixture,
+               AddFixture,
+           )
+
+    The context that wraps a Fixture subclass should eventually inherit from
+    TestContext (which inherits from ``unittest.TestCase`` and provides its assert
+    methods).  In order for nose to find and execute this ``TestContext``, it
+    must have a name that contains Test.
 
     **Properties**
 
