@@ -42,9 +42,18 @@ def log(prefix = ''):
 
     def _(function):
         @functools.wraps(function, assigned = functools.WRAPPER_ASSIGNMENTS + ( '__file__', ))
-        def wrapper(*args, **kwargs):  # TODO use inspect.signature
+        def wrapper(*args, **kwargs):
+            name = function.__name__
+
+            if inspect.isclass(args[0]):
+                members = inspect.getmembers(args[0], predicate = lambda name, value: name == function.__name__)
+                logger.debug('members: %s', members)
+
+                if len(members):
+                    name = args.pop(0).__class__.__name__ + '.' + function.__name__
+
             format_args = (
-                prefix + function.__name__,
+                prefix + name,
                 ', '.join(list(map(str, args)) + [ ' = '.join(map(str, item)) for item in kwargs.items() ]),
             )
 
