@@ -72,7 +72,7 @@ def up(services: Iterable[str] = ()) -> int:
     if not len(services):
         raise ValueError('empty iterable passed to up(): {0}'.format(services))
 
-    return _call('docker-compose up -d --no-deps ' + ' '.join(services), shell = True)
+    return _call('docker-compose up --no-color -d --no-deps ' + ' '.join(services), shell = True)
 
 
 def _call(command: str, *args, **kwargs) -> int:
