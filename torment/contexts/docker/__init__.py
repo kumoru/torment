@@ -93,7 +93,7 @@ class DockerContext(contexts.TestContext):
 
         super().setUp()
 
-        logger.debug('self.docker_compose_services: %s', self.docker_compose_services)
+        logger.debug('self.__class__.docker_compose_services: %s', self.__class__.docker_compose_services)
 
         compose.up(self.docker_compose_services)
         self.addCleanup(compose.stop)
