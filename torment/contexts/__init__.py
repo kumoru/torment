@@ -133,8 +133,8 @@ class TestContext(unittest.TestCase):
     def setUp(self) -> None:
         super().setUp()
 
-        logger.debug('self.mocks_mask: %s', self.mocks_mask)
-        logger.debug('self.mocks: %s', self.mocks)
+        logger.debug('self.__class__.mocks_mask: %s', self.__class__.mocks_mask)
+        logger.debug('self.__class__.mocks: %s', self.__class__.mocks)
 
     @decorators.log
     def patch(self, name: str) -> None:
