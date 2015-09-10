@@ -43,18 +43,20 @@ def log(prefix = ''):
     def _(function):
         @functools.wraps(function, assigned = functools.WRAPPER_ASSIGNMENTS + ( '__file__', ))
         def wrapper(*args, **kwargs):
-            name = function.__name__
+            name, my_args = function.__name__, args
 
-            if inspect.isclass(args[0]):
-                members = inspect.getmembers(args[0], predicate = lambda name, value: name == function.__name__)
+            if inspect.ismethod(function):
+                name = function.__self__.__class__.__name__ + '.' + function.__name__
+            elif len(args):
+                members = dict(inspect.getmembers(args[0], predicate = lambda _: inspect.ismethod(_) and _.__name__ == function.__name__))
                 logger.debug('members: %s', members)
 
                 if len(members):
-                    name = args.pop(0).__class__.__name__ + '.' + function.__name__
+                    name, my_args = args[0].__class__.__name__ + '.' + function.__name__, args[1:]
 
             format_args = (
                 prefix + name,
-                ', '.join(list(map(str, args)) + [ ' = '.join(map(str, item)) for item in kwargs.items() ]),
+                ', '.join(list(map(str, my_args)) + [ ' = '.join(map(str, item)) for item in kwargs.items() ]),
             )
 
             logger.info('STARTING: %s(%s)', *format_args)
