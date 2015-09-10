@@ -15,6 +15,7 @@
 import logging
 import os
 import typing  # noqa (use mypy typing)
+import unittest
 
 from torment import contexts
 from torment import fixtures
@@ -44,6 +45,9 @@ class LogDecoratorFixture(fixtures.Fixture):
     def run(self) -> None:
         logger.debug('self.function: %s', self.function)
         logger.debug('hasattr(self.function, __wrapped__): %s', hasattr(self.function, '__wrapped__'))
+
+        if not hasattr(self.context, 'assertLogs'):
+            raise unittest.SkipTest('assertLogs not available—added in python-3.4')
 
         with self.context.assertLogs(decorators.logger, level = logging.DEBUG) as mocked_logger:
             try:
