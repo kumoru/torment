@@ -12,27 +12,43 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
 import typing  # noqa (use mypy typing)
 
 from torment import contexts
 from torment import fixtures
+from torment import helpers
+
+from torment import decorators
 
 
 class LogDecoratorFixture(fixtures.Fixture):
+    def initialize(self):
+        if not hasattr(self, 'parameters'):
+            self.parameters = {}
+
     @property
     def description(self) -> str:
-        _description = super().description + '.log({0.function.__name__})'
+        _description = super().description + '.log'
 
         if self.parameters.get('prefix') is not None:
-            _description = _description[:20] + '({0.parameters[prefix]})' + _description[20:]
+            _description += '({0.parameters[prefix]})'
+
+        _description += '({0.function.__name__})'
 
         return _description.format(self, self.context.module)
 
     def run(self) -> None:
-        pass  # TODO capture logs
+        with self.context.assertLogs(decorators.logger) as mocked_logger:
+            try:
+                decorators.log(self.parameters.get('prefix', ''))(self.function)()
+            except RuntimeError:
+                pass
+
+        self.mocked_logger = mocked_logger
 
     def check(self) -> None:
-        pass  # TODO capture logs
+        self.context.assertEqual(self.mocked_logger.output, self.expected)
 
 
 class MockDecoratorFixture(fixtures.Fixture):
@@ -45,6 +61,8 @@ class MockDecoratorFixture(fixtures.Fixture):
 
     def check(self) -> None:
         pass  # TODO mock symbol
+
+helpers.import_directory(__name__, os.path.dirname(__file__))
 
 
 class DecoratorUnitTest(contexts.TestContext, metaclass = contexts.MetaContext):
