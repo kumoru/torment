@@ -45,7 +45,7 @@ def log(prefix = ''):
         def wrapper(*args, **kwargs):
             name = function.__name__
 
-            if inspect.isclass(args[0]):
+            if len(args) and inspect.isclass(args[0]):
                 members = inspect.getmembers(args[0], predicate = lambda name, value: name == function.__name__)
                 logger.debug('members: %s', members)
 
