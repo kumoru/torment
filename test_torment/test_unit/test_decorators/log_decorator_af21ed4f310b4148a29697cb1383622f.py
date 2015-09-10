@@ -29,16 +29,7 @@ fixtures.register(globals(), ( LogDecoratorFixture, ), {
 
     'expected': [
         'INFO:torment.decorators:STARTING: prefixfailure()',
-        'ERROR:torment.decorators:EXCEPTION: prefixfailure()\n'
-        'Traceback (most recent call last):\n'
-        '  File "/home/alunduil/Projects/kumoru/torment/torment/decorators.py", '
-        'line 65, in wrapper\n'
-        '    return function(*args, **kwargs)\n'
-        '  File '
-        '"/home/alunduil/Projects/kumoru/torment/test_torment/test_unit/test_decorators/log_decorator_af21ed4f310b4148a29697cb1383622f.py", '
-        'line 21, in failure\n'
-        '    raise RuntimeError()\n'
-        'RuntimeError',
+        'ERROR:torment.decorators:EXCEPTION: prefixfailure()',
         'INFO:torment.decorators:STOPPING: prefixfailure()',
     ]
 })

@@ -59,7 +59,8 @@ class LogDecoratorFixture(fixtures.Fixture):
         logger.debug('self.mocked_logger.output: %s', self.mocked_logger.output)
 
     def check(self) -> None:
-        self.context.assertEqual(list(filter(lambda _: 'INFO' in _ or 'EXCEPTION' in _, self.mocked_logger.output)), self.expected)
+        for output in filter(lambda _: 'INFO' in _ or 'EXCEPTION' in _, self.mocked_logger.output):
+            self.context.assertTrue(output.startswith(self.expected.pop(0)))
 
 
 class MockDecoratorFixture(fixtures.Fixture):

@@ -25,16 +25,7 @@ fixtures.register(globals(), ( LogDecoratorFixture, ), {
 
     'expected': [
         'INFO:torment.decorators:STARTING: failure()',
-        'ERROR:torment.decorators:EXCEPTION: failure()\n'
-        'Traceback (most recent call last):\n'
-        '  File "/home/alunduil/Projects/kumoru/torment/torment/decorators.py", '
-        'line 65, in wrapper\n'
-        '    return function(*args, **kwargs)\n'
-        '  File '
-        '"/home/alunduil/Projects/kumoru/torment/test_torment/test_unit/test_decorators/log_decorator_13d6c3fc82334900a2f294735600931c.py", '
-        'line 21, in failure\n'
-        '    raise RuntimeError()\n'
-        'RuntimeError',
+        'ERROR:torment.decorators:EXCEPTION: failure()',
         'INFO:torment.decorators:STOPPING: failure()'
     ],
 })
