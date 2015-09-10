@@ -238,6 +238,9 @@ class Fixture(object):
 
         '''
 
+        if hasattr(self, '_last_resolver_exception'):
+            logger.warning('last exception from %s.%s:', self.__class__.__name__, self._last_resolver_exception[0], exc_info = self._last_resolver_exception[1])
+
         self.setup()
         self.run()
         self.check()
@@ -418,6 +421,8 @@ def _resolve_functions(functions: Dict[str, Callable[[Any], Any]], fixture: Fixt
         if len(functions):
             logger.warning('unprocessed Fixture properties: %s', ','.join(functions.keys()))
             logger.warning('last exception from %s.%s:', fixture.name, last_function, exc_info = exc_info)
+
+            setattr(fixture, '_last_resolver_exception', ( last_function, exc_info, ))
 
             for name, function in copy.copy(functions).items():
                 setattr(fixture, name, function)
