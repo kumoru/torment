@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import logging
 import os
 import typing  # noqa (use mypy typing)
 
@@ -20,6 +21,8 @@ from torment import fixtures
 from torment import helpers
 
 from torment import decorators
+
+logger = logging.getLogger(__name__)
 
 
 class LogDecoratorFixture(fixtures.Fixture):
@@ -39,16 +42,24 @@ class LogDecoratorFixture(fixtures.Fixture):
         return _description.format(self, self.context.module)
 
     def run(self) -> None:
-        with self.context.assertLogs(decorators.logger) as mocked_logger:
+        logger.debug('self.function: %s', self.function)
+        logger.debug('hasattr(self.function, __wrapped__): %s', hasattr(self.function, '__wrapped__'))
+
+        with self.context.assertLogs(decorators.logger, level = logging.DEBUG) as mocked_logger:
             try:
-                decorators.log(self.parameters.get('prefix', ''))(self.function)()
+                if hasattr(self.function, '__wrapped__'):
+                    self.function()
+                else:
+                    decorators.log(self.parameters.get('prefix', ''))(self.function)()
             except RuntimeError:
                 pass
 
         self.mocked_logger = mocked_logger
 
+        logger.debug('self.mocked_logger.output: %s', self.mocked_logger.output)
+
     def check(self) -> None:
-        self.context.assertEqual(self.mocked_logger.output, self.expected)
+        self.context.assertEqual(list(filter(lambda _: 'INFO' in _ or 'EXCEPTION' in _, self.mocked_logger.output)), self.expected)
 
 
 class MockDecoratorFixture(fixtures.Fixture):

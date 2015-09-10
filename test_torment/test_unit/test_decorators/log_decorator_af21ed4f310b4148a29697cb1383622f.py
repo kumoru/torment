@@ -32,7 +32,7 @@ fixtures.register(globals(), ( LogDecoratorFixture, ), {
         'ERROR:torment.decorators:EXCEPTION: prefixfailure()\n'
         'Traceback (most recent call last):\n'
         '  File "/home/alunduil/Projects/kumoru/torment/torment/decorators.py", '
-        'line 63, in wrapper\n'
+        'line 65, in wrapper\n'
         '    return function(*args, **kwargs)\n'
         '  File '
         '"/home/alunduil/Projects/kumoru/torment/test_torment/test_unit/test_decorators/log_decorator_af21ed4f310b4148a29697cb1383622f.py", '
