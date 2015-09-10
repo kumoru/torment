@@ -137,7 +137,7 @@ class TestContext(unittest.TestCase):
         logger.debug('self.__class__.mocks: %s', self.__class__.mocks)
 
     @decorators.log
-    def patch(self, name: str) -> None:
+    def patch(self, name: str, relative: bool = True) -> None:
         '''Patch name with mock in actual module.
 
         Sets up mock objects for the given symbol in the actual module
@@ -145,12 +145,19 @@ class TestContext(unittest.TestCase):
 
         **Parameters**
 
-        :``name``: the symbol to mock—must exist in the actual module under test
+        :``name``:     the symbol to mock—must exist in the actual module under test
+        :``relative``: prefix actual module corresponding to this context's
+                       testing module to the given symbol to patch
 
         '''
 
-        logger.debug('self.module: %s', self.module)
+        prefix = ''
 
-        _ = unittest.mock.patch(self.module + '.' + name)
+        if relative:
+            prefix = self.module + '.'
+
+        logger.debug('prefix: %s', prefix)
+
+        _ = unittest.mock.patch(prefix + name)
         setattr(self, 'mocked_' + name.replace('.', '_').strip('_'), _.start())
         self.addCleanup(_.stop)
