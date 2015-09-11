@@ -43,9 +43,6 @@ class LogDecoratorFixture(fixtures.Fixture):
         return _description.format(self, self.context.module)
 
     def run(self) -> None:
-        logger.debug('self.function: %s', self.function)
-        logger.debug('hasattr(self.function, __wrapped__): %s', hasattr(self.function, '__wrapped__'))
-
         if not hasattr(self.context, 'assertLogs'):
             raise unittest.SkipTest('assertLogs not available—added in python-3.4')
 
@@ -67,22 +64,45 @@ class LogDecoratorFixture(fixtures.Fixture):
             self.context.assertTrue(output.startswith(self.expected.pop(0)))
 
 
-class MockDecoratorFixture(fixtures.Fixture):
-    @property
-    def description(self) -> str:
-        return super().description + '.mock({0.mock.name})'
-
-    def run(self) -> None:
-        pass  # TODO mock symbol
-
-    def check(self) -> None:
-        pass  # TODO mock symbol
-
 helpers.import_directory(__name__, os.path.dirname(__file__))
 
 
 class DecoratorUnitTest(contexts.TestContext, metaclass = contexts.MetaContext):
     fixture_classes = (
         LogDecoratorFixture,
-        MockDecoratorFixture,
     )
+
+
+class MockDecoratorTest(unittest.TestCase):
+    def setUp(self) -> None:
+        class context(object):
+            mocks_mask = set()
+
+        self.c = context()
+
+    def test_masked_call(self) -> None:
+        '''torment.decorators.mock(foo): foo in mocks_mask'''
+
+        self.c.mocks_mask.add('foo')
+
+        self.assertFalse(decorators.mock('foo')(lambda self: None)(self.c))
+
+        self.assertFalse(self.c.is_mocked_foo)
+
+    def test_single_call(self) -> None:
+        '''torment.decorators.mock(foo): not called'''
+
+        self.assertTrue(decorators.mock('foo')(lambda self: None)(self.c))
+
+        self.assertTrue(self.c.is_mocked_foo)
+
+    def test_many_call(self) -> None:
+        '''torment.decorators.mock(foo): previously called'''
+
+        decorators.mock('foo')(lambda self: None)(self.c)
+
+        self.assertTrue(decorators.mock('foo')(lambda self: None)(self.c))
+
+        logger.debug('dir(self.c): %s', dir(self.c))
+
+        self.assertTrue(self.c.is_mocked_foo)
