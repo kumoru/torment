@@ -79,6 +79,23 @@ def import_directory(module_basename: str, directory: str, sort_key = None) -> N
             logger.info('successfully loaded %s', modulename)
 
 
+def powerset(iterable: Iterable[Any]) -> Iterable[Iterable[Any]]:
+    '''Powerset of iterable.
+
+    **Parameters**
+
+    :``iterable``: set to generate powerset
+
+    **Return Value(s)**
+
+    Generator that produces all subsets of iterable.
+
+    '''
+
+    s = list(iterable)
+    return itertools.chain.from_iterable(itertools.combinations(s, r) for r in range(len(s) + 1))
+
+
 @decorators.log
 def _filenames_to_modulenames(filenames: Iterable[str], modulename_prefix: str, filename_prefix: str = '') -> Iterable[str]:
     '''Convert given filenames to module names.
