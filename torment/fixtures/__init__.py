@@ -246,6 +246,53 @@ class Fixture(object):
         self.check()
 
 
+class ErrorFixture(Fixture):
+    '''Common error checking for Fixture.
+
+    Intended as a mixin when registering a new Fixture (via register) that will
+    check an error case (one throwing an exception).
+
+    **Examples**
+
+    Using the AddFixture from the Examples in Fixture, we can create a Fixture
+    that handles (an obviously contrived) exception by either crafting a new
+    Fixture object or invoking register with the appropriate base classes.
+
+    New Fixture Object:
+
+    .. code-block:: python
+
+       class ErrorAddFixture(ErrorFixture, AddFixture):
+           pass
+
+    Via call to register:
+
+    .. code-block:: python
+
+       register(globals(), ( ErrorFixture, AddFixture, ), { … })
+
+    '''
+
+    @property
+    def description(self) -> str:
+        '''Test name in nose output (adds error reason as result portion).'''
+
+        return super().description + ' → {0.error.reason}'.format(self)
+
+    def run(self) -> None:
+        '''Calls sibling with exception expectation.'''
+
+        with self.context.assertRaises(self.error.__class__, msg = self.error.reason) as error:
+            super().run()
+
+        self.exception = error.exception
+
+    def check(self) -> None:
+        '''Ensures that the exception contains our expected reason.'''
+
+        self.context.assertEqual(self.exception.reason, self.error.reason)
+
+
 @decorators.log
 def of(fixture_classes: Iterable[type], context: Union[None, 'torment.TestContext'] = None) -> Iterable['torment.fixtures.Fixture']:
     '''Obtain all Fixture objects of the provided classes.

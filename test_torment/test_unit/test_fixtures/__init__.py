@@ -67,6 +67,27 @@ class FixturesPropertyUnitTest(unittest.TestCase):
         self.assertEqual(self.f.name, 'test_94d7c58f6ee44683936c21cb84d1e458')
 
 
+class ErrorFixturesPropertyUnitTest(unittest.TestCase):
+    def test_error_fixture_description(self) -> None:
+        '''torment.fixtures.ErrorFixture(context).description == 'expected → failure' '''
+
+        class fixture(fixtures.Fixture):
+            @property
+            def description(self) -> str:
+                return 'expected'
+
+        class error_fixture(fixtures.ErrorFixture, fixture):
+            def __init__(self, *args, **kwargs) -> None:
+                super().__init__(*args, **kwargs)
+                self.error = unittest.mock.PropertyMock(reason = 'failure')
+
+        c = unittest.TestCase()
+
+        e = error_fixture(c)
+
+        self.assertEqual(e.description, 'expected → failure')
+
+
 class OfUnitTest(unittest.TestCase):
     def test_of_zero(self) -> None:
         '''torment.fixtures.of(()) == []'''
