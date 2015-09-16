@@ -87,14 +87,14 @@ class MockDecoratorTest(unittest.TestCase):
 
         self.assertFalse(decorators.mock('foo')(lambda self: None)(self.c))
 
-        self.assertFalse(self.c.is_mocked_foo)
+        self.assertFalse(self.c._is_mocked_foo)
 
     def test_single_call(self) -> None:
         '''torment.decorators.mock(foo): not called'''
 
         self.assertTrue(decorators.mock('foo')(lambda self: None)(self.c))
 
-        self.assertTrue(self.c.is_mocked_foo)
+        self.assertTrue(self.c._is_mocked_foo)
 
     def test_many_call(self) -> None:
         '''torment.decorators.mock(foo): previously called'''
@@ -105,4 +105,4 @@ class MockDecoratorTest(unittest.TestCase):
 
         logger.debug('dir(self.c): %s', dir(self.c))
 
-        self.assertTrue(self.c.is_mocked_foo)
+        self.assertTrue(self.c._is_mocked_foo)

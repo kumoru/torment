@@ -108,7 +108,7 @@ def mock(name: str) -> Callable[[Any], None]:
 
             if name in self.mocks_mask:
                 logger.info('STOPPING: mock ' + name + '—MASKED')
-            elif getattr(self, 'is_mocked_' + sanitized_name, False):
+            elif getattr(self, '_is_mocked_' + sanitized_name, False):
                 is_mocked = True
 
                 logger.info('STOPPING: mock ' + name + '—EXISTS')
@@ -119,7 +119,7 @@ def mock(name: str) -> Callable[[Any], None]:
 
                 logger.info('STOPPING: mock ' + name)
 
-            setattr(self, 'is_mocked_' + sanitized_name, is_mocked)
+            setattr(self, '_is_mocked_' + sanitized_name, is_mocked)
 
             return is_mocked
 
