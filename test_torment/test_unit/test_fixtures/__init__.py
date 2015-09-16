@@ -79,13 +79,35 @@ class ErrorFixturesPropertyUnitTest(unittest.TestCase):
         class error_fixture(fixtures.ErrorFixture, fixture):
             def __init__(self, *args, **kwargs) -> None:
                 super().__init__(*args, **kwargs)
-                self.error = unittest.mock.PropertyMock(reason = 'failure')
+                self.error = RuntimeError('failure')
 
         c = unittest.TestCase()
 
         e = error_fixture(c)
 
         self.assertEqual(e.description, 'expected → failure')
+
+
+class ErrorFixturesRunTest(unittest.TestCase):
+    def test_error_fixture_run(self) -> None:
+        '''torment.fixtures.ErrorFixture(context).run()'''
+
+        class fixture(fixtures.Fixture):
+            def run(self):
+                raise RuntimeError('failure')
+
+        class error_fixture(fixtures.ErrorFixture, fixture):
+            def __init__(self, *args, **kwargs) -> None:
+                super().__init__(*args, **kwargs)
+                self.error = RuntimeError('failure')
+
+        c = unittest.TestCase()
+
+        e = error_fixture(c)
+        e.run()
+
+        self.assertIsInstance(e.exception, RuntimeError)
+        self.assertEqual(e.exception.args, ( 'failure', ))
 
 
 class OfUnitTest(unittest.TestCase):

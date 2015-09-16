@@ -277,20 +277,15 @@ class ErrorFixture(Fixture):
     def description(self) -> str:
         '''Test name in nose output (adds error reason as result portion).'''
 
-        return super().description + ' → {0.error.reason}'.format(self)
+        return super().description + ' → {0.error}'.format(self)
 
     def run(self) -> None:
         '''Calls sibling with exception expectation.'''
 
-        with self.context.assertRaises(self.error.__class__, msg = self.error.reason) as error:
+        with self.context.assertRaises(self.error.__class__) as error:
             super().run()
 
         self.exception = error.exception
-
-    def check(self) -> None:
-        '''Ensures that the exception contains our expected reason.'''
-
-        self.context.assertEqual(self.exception.reason, self.error.reason)
 
 
 @decorators.log
