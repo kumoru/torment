@@ -35,6 +35,18 @@ class ExtendFixture(fixtures.Fixture):
         self.context.assertEqual(self.expected, self.result)
 
 
+class MergeFixture(fixtures.Fixture):
+    @property
+    def description(self) -> str:
+        return super().description + '.merge({{ {0.parameters[base]} }}, {{ {0.parameters[extension]} }}) == {{ {0.expected} }}'.format(self)
+
+    def run(self) -> None:
+        self.result = helpers.merge(self.parameters['base'], self.parameters['extension'])
+
+    def check(self) -> None:
+        self.context.assertEqual(self.expected, self.result)
+
+
 class PowersetFixture(fixtures.Fixture):
     @property
     def description(self) -> str:
@@ -52,6 +64,7 @@ helpers.import_directory(__name__, os.path.dirname(__file__))
 class HelperUnitTest(contexts.TestContext, metaclass = contexts.MetaContext):
     fixture_classes = (
         ExtendFixture,
+        MergeFixture,
         PowersetFixture,
     )
 
