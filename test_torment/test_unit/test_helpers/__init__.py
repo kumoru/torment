@@ -23,6 +23,18 @@ from torment import fixtures
 from torment import helpers
 
 
+class EvertFixture(fixtures.Fixture):
+    @property
+    def description(self) -> str:
+        return super().description + '.evert({0.parameters[iterable]}) == {0.expected}'.format(self)
+
+    def run(self) -> None:
+        self.result = list(helpers.evert(self.parameters['iterable']))
+
+    def check(self) -> None:
+        self.context.assertEqual(self.expected, self.result)
+
+
 class ExtendFixture(fixtures.Fixture):
     @property
     def description(self) -> str:
@@ -51,6 +63,7 @@ helpers.import_directory(__name__, os.path.dirname(__file__))
 
 class HelperUnitTest(contexts.TestContext, metaclass = contexts.MetaContext):
     fixture_classes = (
+        EvertFixture,
         ExtendFixture,
         PowersetFixture,
     )

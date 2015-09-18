@@ -22,10 +22,45 @@ import typing  # noqa (use mypy typing)
 from typing import Any
 from typing import Dict
 from typing import Iterable
+from typing import Tuple
 
 from torment import decorators
 
 logger = logging.getLogger(__name__)
+
+
+def evert(iterable: Iterable[Dict[str, Tuple]]) -> Iterable[Iterable[Dict[str, Any]]]:
+    '''Evert dictionaries with tuples.
+
+    Iterates over the list of dictionaries and everts them with their tuple
+    values.  For example:
+
+    ``[ { 'a': ( 1, 2, ), }, ]``
+
+    becomes
+
+    ``[ ( { 'a': 1, }, ), ( { 'a', 2, }, ) ]``
+
+    The resulting iterable contains the same number of tuples as the
+    initial iterable had tuple elements.  The number of dictionaries is the same
+    as the cartesian product of the initial iterable's tuple elements.
+
+    Parameters
+    ----------
+
+    :``iterable``: list of dictionaries whose values are tuples
+
+    Return Value(s)
+    ---------------
+
+    All combinations of the choices in the dictionaries.
+
+    '''
+
+    keys = list(itertools.chain.from_iterable([ _.keys() for _ in iterable ]))
+
+    for values in itertools.product(*[ list(*_.values()) for _ in iterable ]):
+        yield [ dict(( pair, )) for pair in zip(keys, values) ]
 
 
 def extend(base: Dict[Any, Any], extension: Dict[Any, Any]) -> Dict[Any, Any]:
