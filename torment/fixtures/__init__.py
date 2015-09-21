@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import copy
+import functools
 import inspect
 import logging
 import os
@@ -360,6 +361,7 @@ def register(namespace, base_classes: Tuple[type], properties: Dict[str, Any]) -
                   :class:  class to instantiate (usually an exception)
                   :args:   arguments to pass to class initialization
                   :kwargs: keyword arguments to pass to class initialization
+    :mocks:       dictionary mapping mock symbols to corresponding values
 
     Properties by the following names are reserved and should not be used:
 
@@ -417,57 +419,158 @@ def register(namespace, base_classes: Tuple[type], properties: Dict[str, Any]) -
 
         self.initialize()
 
+    def setup(self) -> None:
+        if hasattr(self, 'mocks'):
+            logger.debug('self.mocks: %s', self.mocks)
+
+            for mock_symbol, mock_result in self.mocks.items():
+                if _find_mocker(mock_symbol)():
+                    _prepare_mock(self.context, mock_symbol, **mock_result)
+
+        super(self.__class__, self).setup()
+
     namespace[class_name] = type(class_name, base_classes, {
         'description': description,
         '__init__': __init__,
         '__module__': caller_module,
+        'setup': setup,
         'uuid': my_uuid,
     })
 
 
+def _prepare_mock(context: 'torment.contexts.TestContext', symbol: str, return_value = None, side_effect = None) -> None:
+    '''Sets return value or side effect of symbol's mock in context.
+
+    .. seealso:: :py:func:`_find_mocker`
+
+    **Parameters**
+
+    :``context``:       the search context
+    :``symbol``:        the symbol to be located
+    :``return_value``:  pass through to mock ``return_value``
+    :``side_effect``:   pass through to mock ``side_effect``
+
+    '''
+
+    methods = symbol.split('.')
+    index = len(methods)
+
+    mock = None
+
+    while index > 0:
+        name = 'mocked_' + '_'.join(methods[:index]).lower()
+        logger.debug('name: %s', name)
+
+        if hasattr(context, name):
+            mock = getattr(context, name)
+            break
+
+        index -= 1
+
+    logger.debug('mock: %s', mock)
+
+    if mock is not None:
+        mock = functools.reduce(getattr, methods[index:], mock)
+        logger.debug('mock: %s', mock)
+
+        if return_value is not None:
+            mock.return_value = return_value
+
+        if side_effect is not None:
+            mock.side_effect = side_effect
+
+
+def _find_mocker(symbol: str, context: 'torment.contexts.TestContext') -> Callable[[], bool]:
+    '''Find method within the context that mocks symbol.
+
+    Given a symbol (i.e. ``tornado.httpclient.AsyncHTTPClient.fetch``), find
+    the shortest ``mock_`` method that resembles the symbol. Resembles means
+    the lowercased and periods replaced with underscores.
+
+    If no match is found, a dummy function (only returns False) is returned.
+
+    **Parameters**
+
+    :``symbol``:  the symbol to be located
+    :``context``: the search context
+
+    **Return Value(s)**
+
+    The method used to mock the symbol.
+
+    **Examples**
+
+    Assuming the symbol is ``tornado.httpclient.AsyncHTTPClient.fetch``, the
+    first of the following methods would be returned:
+
+    * ``mock_tornado``
+    * ``mock_tornado_httpclient``
+    * ``mock_tornado_httpclient_asynchttpclient``
+    * ``mock_tornado_httpclient_asynchttpclient_fetch``
+
+    '''
+
+    components = []
+    method = None
+
+    for component in symbol.split('.'):
+        components.append(component.lower())
+        name = '_'.join([ 'mock' ] + components)
+
+        if hasattr(context, name):
+            method = getattr(context, name)
+            break
+
+    if method is None:
+        logger.warn('no mocker for %s', symbol)
+        method = lambda *args, **kwargs: False
+
+    return method
+
+
 def _resolve_functions(functions: Dict[str, Callable[[Any], Any]], fixture: Fixture) -> None:
-        '''Apply functions and collect values as properties on fixture.
+    '''Apply functions and collect values as properties on fixture.
 
-        Call functions and apply their values as properteis on fixture.
-        Functions will continue to get applied until no more functions resolve.
-        All unresolved functions are logged and the last exception to have
-        occurred is also logged.  This function does not return but adds the
-        results to fixture directly.
+    Call functions and apply their values as properteis on fixture.
+    Functions will continue to get applied until no more functions resolve.
+    All unresolved functions are logged and the last exception to have
+    occurred is also logged.  This function does not return but adds the
+    results to fixture directly.
 
-        **Parameters**
+    **Parameters**
 
-        :``functions``: dict mapping function names (property names) to
-                        callable functions
-        :``fixture``:   Fixture to add values to
+    :``functions``: dict mapping function names (property names) to
+                    callable functions
+    :``fixture``:   Fixture to add values to
 
-        '''
+    '''
 
-        exc_info = last_function = None
-        function_count = float('inf')
+    exc_info = last_function = None
+    function_count = float('inf')
 
-        while function_count > len(functions):
-            function_count = len(functions)
+    while function_count > len(functions):
+        function_count = len(functions)
 
-            for name, function in copy.copy(functions).items():
-                try:
-                    setattr(fixture, name, copy.deepcopy(function(fixture)))
-                    del functions[name]
-                except:
-                    exc_info = sys.exc_info()
+        for name, function in copy.copy(functions).items():
+            try:
+                setattr(fixture, name, copy.deepcopy(function(fixture)))
+                del functions[name]
+            except:
+                exc_info = sys.exc_info()
 
-                    logger.debug('name: %s', name)
-                    logger.debug('exc_info: %s', exc_info)
+                logger.debug('name: %s', name)
+                logger.debug('exc_info: %s', exc_info)
 
-                    last_function = name
+                last_function = name
 
-        if len(functions):
-            logger.warning('unprocessed Fixture properties: %s', ','.join(functions.keys()))
-            logger.warning('last exception from %s.%s:', fixture.name, last_function, exc_info = exc_info)
+    if len(functions):
+        logger.warning('unprocessed Fixture properties: %s', ','.join(functions.keys()))
+        logger.warning('last exception from %s.%s:', fixture.name, last_function, exc_info = exc_info)
 
-            setattr(fixture, '_last_resolver_exception', ( last_function, exc_info, ))
+        setattr(fixture, '_last_resolver_exception', ( last_function, exc_info, ))
 
-            for name, function in copy.copy(functions).items():
-                setattr(fixture, name, function)
+        for name, function in copy.copy(functions).items():
+            setattr(fixture, name, function)
 
 
 def _unique_class_name(namespace: Dict[str, Any], uuid: uuid.UUID) -> str:

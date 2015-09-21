@@ -20,6 +20,7 @@ import unittest
 import uuid
 
 from torment import fixtures
+from torment import contexts
 
 logger = logging.getLogger(__name__)
 
@@ -232,6 +233,134 @@ class RegisterUnitTest(unittest.TestCase):
         _ = self.ns[self.class_name](self.context)
 
         self.assertIsInstance(_.error, RuntimeError)
+
+    def test_mocks_mock_property(self) -> None:
+        '''torment.fixtures.register({}, (), { 'mocks': { 'symbol': …, }, }).setup()'''
+
+        _ = unittest.mock.patch('torment.fixtures._find_mocker')
+        mocked_fixtures_find_mocker = _.start()
+        self.addCleanup(_.stop)
+        mocked_fixtures_find_mocker.return_value = lambda: True
+
+        _ = unittest.mock.patch('torment.fixtures._prepare_mock')
+        mocked_fixtures_prepare_mock = _.start()
+        self.addCleanup(_.stop)
+
+        fixtures.register(self.ns, ( fixtures.Fixture, ), { 'mocks': { 'symbol': {}, }, })
+
+        _ = self.ns[self.class_name](self.context)
+        _.setup()
+
+        mocked_fixtures_find_mocker.assert_called_once_with('symbol')
+        mocked_fixtures_prepare_mock.assert_called_once_with(self.context, 'symbol')
+
+
+class PrepareMockUnitTest(unittest.TestCase):
+    def setUp(self) -> None:
+        class ContextStub(contexts.TestContext):
+            mocked_symbol = unittest.mock.MagicMock(name = 'ContextStub.mocked_symbol')
+
+        self.context = ContextStub()
+
+    def test_prepare_mock_side_effect_zero_dots(self) -> None:
+        '''tormnet.fixtures._prepare_mock(ContextStub, 'symbol', side_effect = range(2))'''
+
+        fixtures._prepare_mock(self.context, 'symbol', side_effect = range(2))
+        self.assertEqual(self.context.mocked_symbol(), 0)
+        self.assertEqual(self.context.mocked_symbol(), 1)
+        self.assertRaises(StopIteration, self.context.mocked_symbol)
+
+    def test_prepare_mock_return_value_zero_dots(self) -> None:
+        '''tormnet.fixtures._prepare_mock(ContextStub, 'symbol', return_value = 'a')'''
+
+        fixtures._prepare_mock(self.context, 'symbol', return_value = 'a')
+        self.assertEqual(self.context.mocked_symbol(), 'a')
+
+    def test_prepare_mock_return_value_one_dots(self) -> None:
+        '''tormnet.fixtures._prepare_mock(ContextStub, 'symbol.Sub', return_value = 'a')'''
+
+        fixtures._prepare_mock(self.context, 'symbol.Sub', return_value = 'a')
+        self.assertEqual(self.context.mocked_symbol.Sub(), 'a')
+
+    def test_prepare_mock_return_value_many_dots(self) -> None:
+        '''tormnet.fixtures._prepare_mock(ContextStub, 'symbol.sub.a.b.c', return_value = 'a')'''
+
+        fixtures._prepare_mock(self.context, 'symbol.sub.a.b.c', return_value = 'a')
+        self.assertEqual(self.context.mocked_symbol.sub.a.b.c(), 'a')
+
+    def test_prepare_mock_return_value_many_dots_second_level(self) -> None:
+        '''tormnet.fixtures._prepare_mock(ContextStub, 'symbol.sub.a.b.c', return_value = 'a')'''
+
+        class ContextStub(contexts.TestContext):
+            mocked_symbol_sub = unittest.mock.MagicMock(name = 'ContextStub.mocked_symbol_sub')
+
+        c = ContextStub()
+
+        fixtures._prepare_mock(c, 'symbol.sub.a.b.c', return_value = 'a')
+
+        self.assertEqual(c.mocked_symbol_sub.a.b.c(), 'a')
+
+    def test_prepare_mock_return_value_many_dots_all_levels(self) -> None:
+        '''tormnet.fixtures._prepare_mock(ContextStub, 'symbol.Sub.a.b.c', return_value = 'a')'''
+
+        class ContextStub(contexts.TestContext):
+            mocked_symbol_sub_a_b_c = unittest.mock.MagicMock(name = 'ContextStub.mocked_symbol_sub_a_b_c')
+
+        c = ContextStub()
+
+        fixtures._prepare_mock(c, 'symbol.Sub.a.b.c', return_value = 'a')
+
+        self.assertEqual(c.mocked_symbol_sub_a_b_c(), 'a')
+
+
+class FindMockerUnitTest(unittest.TestCase):
+    def test_find_mocker_found_zero_levels(self) -> None:
+        '''tormnet.fixtures._find_mocker('symbol', ContextStub) == mock_symbol'''
+
+        class ContextStub(contexts.TestContext):
+            def mock_symbol(self):
+                pass
+
+        c = ContextStub()
+
+        method = fixtures._find_mocker('symbol', c)
+        self.assertEqual(method, c.mock_symbol)
+
+    def test_find_mocker_found_second_level(self) -> None:
+        '''tormnet.fixtures._find_mocker('symbol.Sub', ContextStub) == mock_symbol_Sub'''
+
+        class ContextStub(contexts.TestContext):
+            def mock_symbol_sub(self):
+                pass
+
+        c = ContextStub()
+
+        method = fixtures._find_mocker('symbol.Sub', c)
+        self.assertEqual(method, c.mock_symbol_sub)
+
+    def test_find_mocker_found_many_levels(self) -> None:
+        '''tormnet.fixtures._find_mocker('symbol.sub.a.b', ContextStub) == mock_symbol_sub_a_b'''
+
+        class ContextStub(contexts.TestContext):
+            def mock_symbol_sub_a_b(self):
+                pass
+
+        c = ContextStub()
+
+        method = fixtures._find_mocker('symbol.sub.a.b', c)
+        self.assertEqual(method, c.mock_symbol_sub_a_b)
+
+    def test_find_mocker_not_found(self) -> None:
+        '''tormnet.fixtures._find_mocker('fakesymbol', ContextStub) == lambda: False'''
+
+        class ContextStub(contexts.TestContext):
+            pass
+
+        c = ContextStub()
+
+        method = fixtures._find_mocker('fakesymbol', c)
+        self.assertFalse(method())
+        self.assertEqual(method.__name__, '<lambda>')
 
 
 class ResolveFunctionsUnitTest(unittest.TestCase):
