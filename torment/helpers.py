@@ -31,14 +31,12 @@ logger = logging.getLogger(__name__)
 def extend(base: Dict[Any, Any], extension: Dict[Any, Any]) -> Dict[Any, Any]:
     '''Extend base by updating with the extension.
 
-    Arguments
-    ---------
+    **Arguments**
 
-    :``base``: dictionary to have keys updated or added
+    :``base``:      dictionary to have keys updated or added
     :``extension``: dictionary to update base with
 
-    Return Value(s)
-    ---------------
+    **Return Value(s)**
 
     Resulting dictionary from updating base with extension.
 
@@ -46,6 +44,31 @@ def extend(base: Dict[Any, Any], extension: Dict[Any, Any]) -> Dict[Any, Any]:
 
     _ = copy.deepcopy(base)
     _.update(extension)
+
+    return _
+
+
+def merge(base: Dict[Any, Any], extension: Dict[Any, Any]) -> Dict[Any, Any]:
+    '''Merge extension into base recursively.
+
+    **Argumetnts**
+
+    :``base``:      dictionary to overlay values onto
+    :``extension``: dictionary to overlay with
+
+    **Return Value(s)**
+
+    Resulting dictionary from overlaying extension on base.
+
+    '''
+
+    _ = copy.deepcopy(base)
+
+    for key, value in extension.items():
+        if isinstance(value, Dict) and key in _:
+            _[key] = merge(_[key], value)
+        else:
+            _[key] = value
 
     return _
 
