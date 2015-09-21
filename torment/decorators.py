@@ -49,7 +49,7 @@ def log(prefix = ''):
                 name = function.__self__.__class__.__name__ + '.' + function.__name__
             elif len(args):
                 members = dict(inspect.getmembers(args[0], predicate = lambda _: inspect.ismethod(_) and _.__name__ == function.__name__))
-                logger.debug('members: %s', members)
+                logger.debug('members.keys(): %s', members.keys())
 
                 if len(members):
                     name, my_args = args[0].__class__.__name__ + '.' + function.__name__, args[1:]
