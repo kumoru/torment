@@ -360,7 +360,7 @@ class FindMockerUnitTest(unittest.TestCase):
 
         method = fixtures._find_mocker('fakesymbol', c)
         self.assertFalse(method())
-        self.assertEqual(method.__name__, '<lambda>')
+        self.assertEqual(method.__name__, 'noop')
 
 
 class ResolveFunctionsUnitTest(unittest.TestCase):
