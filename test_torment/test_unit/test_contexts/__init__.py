@@ -21,7 +21,9 @@ from torment import contexts
 
 logger = logging.getLogger(__name__)
 
-PATCH = lambda: 'not patched'
+
+def PATCH():
+    return 'not patched'
 
 
 class MetaContextGenerateCasesUnitTest(unittest.TestCase):

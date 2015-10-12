@@ -523,7 +523,11 @@ def _find_mocker(symbol: str, context: 'torment.contexts.TestContext') -> Callab
 
     if method is None:
         logger.warn('no mocker for %s', symbol)
-        method = lambda *args, **kwargs: False
+
+        def noop(*args, **kwargs):
+            return False
+
+        method = noop
 
     return method
 
