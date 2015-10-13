@@ -251,7 +251,7 @@ class RegisterUnitTest(unittest.TestCase):
         _ = self.ns[self.class_name](self.context)
         _.setup()
 
-        mocked_fixtures_find_mocker.assert_called_once_with('symbol')
+        mocked_fixtures_find_mocker.assert_called_once_with('symbol', self.context)
         mocked_fixtures_prepare_mock.assert_called_once_with(self.context, 'symbol')
 
 
