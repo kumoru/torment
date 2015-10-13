@@ -424,7 +424,7 @@ def register(namespace, base_classes: Tuple[type], properties: Dict[str, Any]) -
             logger.debug('self.mocks: %s', self.mocks)
 
             for mock_symbol, mock_result in self.mocks.items():
-                if _find_mocker(mock_symbol)():
+                if _find_mocker(mock_symbol, self.context)():
                     _prepare_mock(self.context, mock_symbol, **mock_result)
 
         super(self.__class__, self).setup()
