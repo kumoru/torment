@@ -479,6 +479,8 @@ def _prepare_mock(context: 'torment.contexts.TestContext', symbol: str, return_v
         if side_effect is not None:
             mock.side_effect = side_effect
 
+        mock.reset_mock()
+
 
 def _find_mocker(symbol: str, context: 'torment.contexts.TestContext') -> Callable[[], bool]:
     '''Find method within the context that mocks symbol.

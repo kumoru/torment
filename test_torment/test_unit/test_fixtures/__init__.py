@@ -262,6 +262,12 @@ class PrepareMockUnitTest(unittest.TestCase):
 
         self.context = ContextStub()
 
+    def test_prepare_mock_empty_call_list(self) -> None:
+        '''torment.fixtures._prepare_mock(ContextStub, 'symbol'): mock has empty call list'''
+
+        fixtures._prepare_mock(self.context, 'symbol')
+        self.assertEqual(len(self.context.mocked_symbol.mock_calls), 0)
+
     def test_prepare_mock_side_effect_zero_dots(self) -> None:
         '''tormnet.fixtures._prepare_mock(ContextStub, 'symbol', side_effect = range(2))'''
 
