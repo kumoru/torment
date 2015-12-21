@@ -24,7 +24,7 @@ fixtures.register(globals(), ( ErrorUpFixture, ), {
     },
 
     'expected': (
-        ( ( 'docker-compose up -d --no-deps', ), {}, ),
+        ( ( 'docker-compose up -d ', ), {}, ),
     ),
 
     'error': {
