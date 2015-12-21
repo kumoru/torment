@@ -27,6 +27,6 @@ fixtures.register(globals(), ( UpFixture, ), {
     },
 
     'expected': (
-        ( ( 'docker-compose up --no-color -d --no-deps foo bar', ), { 'shell': True, }, ),
+        ( ( 'docker-compose up --no-color -d foo bar', ), { 'shell': True, }, ),
     ),
 })
