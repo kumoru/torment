@@ -11,3 +11,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+import logging
+
+LOGGER = logging.getLogger(__name__)
+LOGGER.propogate = False
+LOGGER.addHandler(logging.NullHandler())
